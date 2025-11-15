@@ -57,6 +57,7 @@ int main() {
         
         pupil_offset_y = sin(frame_count * 0.08) > 0 ? 0 : 0;
         
+        //mood changes in every 100 frames
         if (frame_count % 400 < 100) {
             emotion_state = 0;
         } else if (frame_count % 400 < 200) {
@@ -84,7 +85,7 @@ int main() {
         } else if (emotion_state == 2) {
             eyebrow_offset = 1;
         } else {
-            eyebrow_offset = (frame_count % 40 < 20) ? -1 : 0;
+            eyebrow_offset = -2;
         }
         
         if (frame_count % 80 == 0 && emotion_state == 0) {
@@ -112,8 +113,8 @@ int main() {
         
         attron(COLOR_PAIR(6) | A_BOLD);
         if (emotion_state == 3) {
-            mvprintw(center_y - 4 + eyebrow_offset + bob_y, center_x - 5, "~");
-            mvprintw(center_y - 4 + bob_y, center_x + 4, "-");
+            mvprintw(center_y - 4 + eyebrow_offset + bob_y, center_x - 5, "v");
+            mvprintw(center_y - 4 + eyebrow_offset + bob_y, center_x + 4, "v");
         } else {
             mvprintw(center_y - 4 + eyebrow_offset + bob_y, center_x - 5, emotion_state == 1 ? "^" : "-");
             mvprintw(center_y - 4 + eyebrow_offset + bob_y, center_x + 4, emotion_state == 1 ? "^" : "-");
@@ -127,10 +128,10 @@ int main() {
             attroff(COLOR_PAIR(1) | A_BOLD);
             
             attron(COLOR_PAIR(5) | A_BOLD);
-            mvprintw(center_y - 2 + bob_y, center_x - 5 + 1 + pupil_offset_x, "o");
+            mvprintw(center_y - 2 + bob_y, center_x - 5 + 1 + pupil_offset_x, ".");
             attroff(COLOR_PAIR(5) | A_BOLD);
             
-            mvprintw(center_y - 2 + bob_y, center_x + 3, " - ");
+            mvprintw(center_y - 2 + bob_y, center_x + 3, " . ");
         } else if (blink_state == 0) {
             attron(COLOR_PAIR(1) | A_BOLD);
             mvprintw(center_y - 2 + bob_y, center_x - 5, "   ");
@@ -178,7 +179,7 @@ int main() {
         attron(COLOR_PAIR(4) | A_BOLD);
         if (emotion_state == 0) {
             mvprintw(center_y + 1 + bob_y, center_x - 2, " \\_/ ");
-            //happy
+           //happy
         } else if (emotion_state == 1) {
             //surprise
             mvprintw(center_y + 1 + bob_y, center_x - 2, "  O  ");
@@ -186,8 +187,8 @@ int main() {
             //shy
             mvprintw(center_y + 1 + bob_y, center_x - 2, " ^_^ ");
         } else {
-            //wink
-            mvprintw(center_y + 1 + bob_y, center_x - 2, "  ~  ");
+            //sad
+            mvprintw(center_y + 1 + bob_y, center_x - 2, " v_v ");
         }
         attroff(COLOR_PAIR(4) | A_BOLD);
         
@@ -204,7 +205,7 @@ int main() {
         }
         attroff(COLOR_PAIR(7) | A_BOLD);
         
-        const char* mood_text[] = {"Happy", "Surprised", "Shy", "Winking"};
+        const char* mood_text[] = {"Happy", "Surprised", "Shy", "Sad"};
         attron(COLOR_PAIR(5));
         mvprintw(center_y + 5 + bob_y, center_x - 4, "Mood: %s", mood_text[emotion_state]);
         attroff(COLOR_PAIR(5));
